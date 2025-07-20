@@ -1,4 +1,4 @@
-# Chat-application-
+
 # Chat App Project
 
 This is a full-stack chat application project consisting of two main parts:
