@@ -41,7 +41,7 @@ export const AuthProvider = ({children})=>{
         }
     }
 
-const login = async(state,credentials)=>{
+    const login = async(state,credentials)=>{
         try{
             const {data} = await axios.post(`/api/auth/${state}`,credentials);
             console.log("Client received token:", data.token);
@@ -51,6 +51,7 @@ const login = async(state,credentials)=>{
                 axios.defaults.headers.common["token"] = data.token;
                 setToken(data.token);
                 localStorage.setItem("token",data.token);
+                console.log("Token set in localStorage:", localStorage.getItem("token"));
                 toast.success(data.message);
             }else{
                 toast.error(data.message);
@@ -62,18 +63,19 @@ const login = async(state,credentials)=>{
    }
 
 
-   const logout = async ()=>{
-    localStorage.removeItem("token");
-    setToken(null);
-    setAuthUser(null);
-    setOnlineUsers([]);
-    delete axios.defaults.headers.common["token"];
-    toast.success("Logged out successfully");
-    if(socket) socket.disconnect();
-   }
+    const logout = async ()=>{
+        localStorage.removeItem("token");
+        console.log("Token removed from localStorage:", localStorage.getItem("token"));
+        setToken(null);
+        setAuthUser(null);
+        setOnlineUsers([]);
+        delete axios.defaults.headers.common["token"];
+        toast.success("Logged out successfully");
+        if(socket) socket.disconnect();
+    }
 
 
-   const updateProfile = async(body)=>{
+    const updateProfile = async(body)=>{
       try{
          const {data}= await axios.put("/api/auth/update-profile",body);
          if(data.success){
